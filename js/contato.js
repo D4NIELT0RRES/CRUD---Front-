@@ -1,6 +1,5 @@
 'use strict'
 
-
 export async function getContatos(){
     const url = `https://bakcend-fecaf-render.onrender.com/contatos`
     const response = await fetch(url)
