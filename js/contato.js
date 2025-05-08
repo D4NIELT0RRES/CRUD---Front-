@@ -6,6 +6,7 @@ export async function getContatos(){
     const data = await response.json()
     return data
 }
+
 export async function getContatosPorNome(nome){
     const url = `https://bakcend-fecaf-render.onrender.com/contatos?nome_like=^${nome}`
     const response = await fetch(url)
@@ -25,7 +26,7 @@ async function getContato(id){
     return data
 }
 
-async function postContato(contato) {
+export async function postContato(contato) {
     const url = `https://bakcend-fecaf-render.onrender.com/contatos`
 
     const option = {
