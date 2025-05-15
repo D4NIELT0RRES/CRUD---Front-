@@ -3,6 +3,7 @@
 import { getContatos } from "./contato.js"
 import { getContatosPorNome } from "./contato.js"
 import { postContato } from "./contato.js"
+import { uploadImageToAzure } from "./uploadImageToAzure.js"
 
 async function criarCard(contato){
     
@@ -43,15 +44,24 @@ function abrirHome(){
 }
 
 async function salvarContato(){
+
+    const uploadParams = {
+        file: document.getElementById('foto').files[0],
+        storageAccount: 'tutorialupload',
+        sasToken: 'sp=racwl&st=2025-05-13T14:27:31Z&se=2025-05-30T22:27:31Z&sv=2024-11-04&sr=c&sig=Jom%2FgMFugyhtw5SZokN0Pe%2BQf7c2ciA8KP9SckR%2FPfc%3D',
+        containerName: 'fotos',
+    };
+
     const contato = 
     {
         "nome"    : document.getElementById('nome')    .value,
         "celular" : document.getElementById('celular') .value,
-        "foto"    : document.getElementById('foto')    .value,
+        "foto"    : await uploadImageToAzure(uploadParams),
         "email"   : document.getElementById('email')   .value,
         "endereco": document.getElementById('endereco').value,
         "cidade"  : document.getElementById('cidade')  .value
     }
+
     
     if(await postContato(contato)){
         await exibirContatos()
@@ -59,11 +69,14 @@ async function salvarContato(){
         alert('Cadastro realizado com succeso')
     }
     
+    await uploadImageToAzure(uploadParams)
 }
 
 
 
 exibirContatos()
+
+
 
 document.getElementById('pesquisar')
         .addEventListener('keydown', exibirPesquisa)
